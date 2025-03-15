@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     private const float Speed = 40.0f;
+    private const float BackwardSpeed = 20.0f;
     private const float TurnSpeed = 30.0f;
 
     private float _horizontalInput;
@@ -20,9 +21,20 @@ public class PlayerController : MonoBehaviour
         _forwardInput = Input.GetAxis("Vertical");
         
         // Moves the car based on forward input.
-        transform.Translate(Vector3.forward * Time.deltaTime * Speed * _forwardInput);   
+
+        if (_forwardInput < 0)
+        {
+            transform.Translate(Vector3.forward * Time.deltaTime * BackwardSpeed * _forwardInput);   
         
-        // Moves the car based on horizontal input.
-        transform.Rotate(Vector3.up * Time.deltaTime * TurnSpeed * _horizontalInput);   
+            // Moves the car based on horizontal input.
+            transform.Rotate(Vector3.down * Time.deltaTime * TurnSpeed * _horizontalInput);   
+        }
+        else
+        {
+            transform.Translate(Vector3.forward * Time.deltaTime * Speed * _forwardInput);   
+        
+            // Moves the car based on horizontal input.
+            transform.Rotate(Vector3.up * Time.deltaTime * TurnSpeed * _horizontalInput);   
+        }
     }
 }
